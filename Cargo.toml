@@ -1,0 +1,6 @@
+[package]
+name = "rcon-lib"
+description = "RCON-LIB is a rust library implementation of the valve RCON protocol"
+version = "0.1.0"
+edition = "2021"
+license = "MIT"
