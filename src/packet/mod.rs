@@ -1,18 +1,18 @@
 use crate::packet::r#type::PacketType;
 use crate::packet::raw::RawPacket;
 
-mod serialization;
 mod raw;
+pub(crate) mod serialization;
 pub mod r#type;
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct Packet {
     /// Packet ID
-    id: i32,
+    pub id: i32,
     /// Packet Type
-    r#type: PacketType,
+    pub r#type: PacketType,
     /// Packet Body
-    body: String
+    pub body: String
 }
 
 impl Packet {
@@ -20,8 +20,12 @@ impl Packet {
         Self {id, r#type, body}
     }
 
-    pub fn from(packet_data: Vec<u8>) -> Packet {
+    pub fn from_raw(packet_data: Vec<u8>) -> Packet {
         RawPacket::deserialize(packet_data).into()
+    }
+
+    pub fn from_raw_with_size(packet_size: [u8; 4], packet_data: Vec<u8>) -> Packet {
+        RawPacket::deserialize([Vec::from(packet_size), packet_data].concat()).into()
     }
 
     pub fn serialize(&self) -> Vec<u8> {
@@ -56,7 +60,7 @@ mod tests {
         let results = load_packet_test_files();
 
         for i in 0..3 {
-            print!("Testing packet {i}/3...");
+            print!("Testing packet {}/3...", i + 1);
             assert_eq!(packets[i].serialize(), results[i]);
             println!("OK!")
         }
@@ -68,8 +72,8 @@ mod tests {
         let results = load_packet_test_files();
 
         for i in 0..3 {
-            print!("Testing packet {i}/3...");
-            assert_eq!(Packet::from(results[i].clone()), packets[i]);
+            print!("Testing packet {}/3...", i + 1);
+            assert_eq!(Packet::from_raw(results[i].clone()), packets[i]);
             println!("OK!")
         }
     }

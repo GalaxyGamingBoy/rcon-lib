@@ -1,6 +1,7 @@
 use crate::packet::Packet;
 use crate::packet::serialization::{deserialize_i32, serialize_i32};
 
+/// The raw TCP packet
 #[derive(Debug, Clone, PartialEq)]
 pub struct RawPacket {
     sz: i32,
