@@ -1,9 +1,9 @@
 use crate::packet::Packet;
 use crate::packet::serialization::{deserialize_i32, serialize_i32};
 
-/// The raw TCP packet
+/// The raw RCON packet to be used for de/serialization
 #[derive(Debug, Clone, PartialEq)]
-pub struct RawPacket {
+pub(crate) struct RawPacket {
     sz: i32,
     id: i32,
     r#type: i32,
